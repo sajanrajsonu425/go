@@ -16,7 +16,7 @@ const (
 	WEBPORT = ":8080"
 )
 
-//Create the struct to handle the response json
+//RespBody is Created the struct to handle the response json
 type RespBody struct {
 	Time struct {
 		Updated    string    `json:"updated"`
@@ -64,14 +64,14 @@ func main() {
 
 }
 
-//Create the home function to check the response
+//homefunc is Created the home function to check the response
 func homefunc(w http.ResponseWriter, r *http.Request) {
 
 	fmt.Fprint(w, "We have received request")
 
 }
 
-//Create the solace consumer function to publish the messages
+//SolaceConsumer is Created the solace consumer function to publish the messages
 func SolaceConsumer(w http.ResponseWriter, r *http.Request) {
 
 	reqbody, err := ioutil.ReadAll(r.Body)
