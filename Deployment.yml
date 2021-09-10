@@ -1,0 +1,22 @@
+apiVersion: v1
+data:
+  jenkins.image: gcr.io/cloud-marketplace/google/jenkins@sha256:b67e8b8537ad2edbfff90c6732bed846a22b6603966f0bb6ce4960d8fa788fbc
+  name: golangapp
+  namespace: default
+kind: ConfigMap
+metadata:
+  creationTimestamp: "2019-09-03T13:50:07Z"
+  labels:
+    app.kubernetes.io/component: deployer.marketplace.cloud.google.com
+    app.kubernetes.io/name: golangapp
+  name: golangapp-deployer-config
+  namespace: default
+  ownerReferences:
+  - apiVersion: app.k8s.io/v1beta1
+    blockOwnerDeletion: true
+    kind: Application
+    name: golangapp
+    uid: bd04324b-ce51-11e9-a9e9-42010a800209
+  resourceVersion: "941418"
+  selfLink: /api/v1/namespaces/default/configmaps/svcrm-deployer-config
+  uid: bd65b580-ce51-11e9-a9e9-42010a800209
