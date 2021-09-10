@@ -66,7 +66,7 @@ func main() {
 
 func homefunc(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Fprint(w, "We have received request")
+	fmt.Fprint(w, "We have received request 1")
 
 }
 
