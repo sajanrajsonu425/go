@@ -42,8 +42,8 @@ steps:
   # Deploy to Cloud Run
   - name: 'gcr.io/cloud-builders/gcloud'
     args: ['run', 'deploy', 'golangapp', 
-           '--image=us-central1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/myimage:$SHORT_SHA', 
-           '--region', 'us-central1', '--platform', 'managed']
+           '--image=us-asia-south1-docker.pkg.dev/$PROJECT_ID/$_REPO_NAME/myimage:$SHORT_SHA', 
+           '--region', 'asia-south1', '--platform', 'managed']
   # [END cloudbuild_go_deploy_yaml]
 
 # [START cloudbuild_go_logs_yaml]
