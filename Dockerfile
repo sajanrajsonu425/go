@@ -6,7 +6,10 @@ ENV GOPATH=/go
 
 # Get the required Go packages
 RUN go get -u github.com/gorilla/mux
-
+RUN go get -u go.mongodb.org/mongo-driver/mongo
+RUN go get -u go.mongodb.org/mongo-driver/mongo/options
+RUN go get -u go.mongodb.org/mongo-driver/mongo/readpref
+RUN go get -u gopkg.in/mgo.v2/bson
 
 
 # Transpile and install the client-side application code
