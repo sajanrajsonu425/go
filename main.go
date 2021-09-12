@@ -82,6 +82,6 @@ func SolaceConsumer(w http.ResponseWriter, r *http.Request) {
 
 	json.Unmarshal(reqbody, &u)
 
-	fmt.Printf("this is %s", u)
+	fmt.Println(u)
 
 }
