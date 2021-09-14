@@ -18,7 +18,7 @@ import (
 
 //Define the port for the
 const (
-	WEBPORT = ":8080"
+	WEBPORT = ":80"
 )
 
 //RespBody is Create the struct to handle the response json
