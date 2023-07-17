@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Creating an EC2 Instance
 Resources:
-  MyIAMRole:
+  GoIAMRole:
     Type: 'AWS::IAM::Role'
     Properties:
       RoleName: MyEC2S3FullAccessRole
@@ -16,14 +16,14 @@ Resources:
       ManagedPolicyArns:
         - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
         - 'arn:aws:iam::aws:policy/AmazonEC2FullAccess'
-  DemoInstanceProfile:
+  GoInstanceProfile:
     Type: AWS::IAM::InstanceProfile
     Properties: 
       InstanceProfileName: golang-ec2-instance
       Path: '/'
       Roles: 
        - 
-         Ref: "MyIAMRole"
+         Ref: "GoIAMRole"
   MyEC2Instance: 
       Type: AWS::EC2::Instance
       Properties: 
@@ -31,7 +31,7 @@ Resources:
         KeyName: "demo"
         AvailabilityZone: "ap-south-1a"
         InstanceType: "t2.micro"
-        IamInstanceProfile: !Ref DemoInstanceProfile
+        IamInstanceProfile: !Ref GoInstanceProfile
         UserData: 
           Fn::Base64: !Sub |
             #!/bin/bash -xe
