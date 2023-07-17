@@ -4,7 +4,7 @@ Resources:
   GoIAMRole:
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: MyEC2S3FullAccessRole
+      RoleName: MyGoRole
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
