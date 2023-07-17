@@ -15,7 +15,7 @@ pipeline {
                     pwd();
                     withAWS(region:'ap-south-1',credentials:'sajan-aws-jenkins-id') {                         
                          sh 'echo "Uploading content with AWS creds"'
-                         s3Upload(bucket:"sajan-django-bucket-01", workingDir:'Django', includePathPattern:'**/*');                         
+                         s3Upload(bucket:"sjn-golang-bucket-01", workingDir:'GoLang', includePathPattern:'**/*');                         
                          }
                     }
               }
@@ -37,7 +37,7 @@ pipeline {
                 ])
                 {                    
                     sh 'aws s3 ls'
-                    sh 'aws cloudformation create-stack --stack-name djangoStack --template-body file://djangoTemp.yaml --capabilities CAPABILITY_NAMED_IAM'
+                    sh 'aws cloudformation create-stack --stack-name goStack --template-body file://goTemp.yaml --capabilities CAPABILITY_NAMED_IAM'
                 }
             }           
         }          
