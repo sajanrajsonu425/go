@@ -1,0 +1,94 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Creating an EC2 Instance
+Resources:
+  MyIAMRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      RoleName: MyEC2S3FullAccessRole
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service:
+                - ec2.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/AmazonS3FullAccess'
+        - 'arn:aws:iam::aws:policy/AmazonEC2FullAccess'
+  DemoInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties: 
+      InstanceProfileName: golang-ec2-instance
+      Path: '/'
+      Roles: 
+       - 
+         Ref: "MyIAMRole"
+  MyEC2Instance: 
+      Type: AWS::EC2::Instance
+      Properties: 
+        ImageId: "ami-0f5ee92e2d63afc18"
+        KeyName: "demo"
+        AvailabilityZone: "ap-south-1a"
+        InstanceType: "t2.micro"
+        IamInstanceProfile: !Ref DemoInstanceProfile
+        UserData: 
+          Fn::Base64: !Sub |
+            #!/bin/bash -xe
+            ################### Install AWS CLI ###################
+            sudo DEBIAN_FRONTEND=noninteractive apt-get update
+            sudo DEBIAN_FRONTEND=noninteractive apt-get upgrade -y
+            sudo DEBIAN_FRONTEND=noninteractive apt-get install -y awscli
+            ################### Fetch data from S3 bucket ###################
+            aws s3 sync s3://sjn-golang-bucket-01/ /home/ubuntu/
+            cd /home/ubuntu/
+            ################### EC2 configuration ###################
+            sudo DEBIAN_FRONTEND=noninteractive apt install wget tar -y
+            wget https://golang.org/dl/go1.17.linux-amd64.tar.gz
+            sudo tar -xvf go1.17.linux-amd64.tar.gz -C /usr/local/
+            echo 'export GOPATH=$HOME/go' >> ~/.profile
+            echo 'export PATH=/usr/local/go/bin:$PATH:$GOPATH/bin' >> ~/.profile            
+            source ~/.profile
+            sudo DEBIAN_FRONTEND=noninteractive apt install apache2 -y
+            aws s3 cp s3://sajan-django-bucket-01/django.conf /etc/apache2/sites-available/
+            systemctl reload apache2
+            a2dissite 000-default.conf
+            a2ensite django.conf
+            systemctl restart apache2           
+        SecurityGroupIds: 
+          - Ref: InstanceSecurityGroup
+        Tags:
+          - Key: "Name"
+            Value: "golang-web"
+  InstanceSecurityGroup:
+      Type: AWS::EC2::SecurityGroup
+      Properties:
+        GroupDescription: "golang-SG"
+        VpcId: "vpc-6605d10d"
+        GroupName: "Instance-SG-golang"
+        SecurityGroupIngress:
+          - IpProtocol: tcp
+            FromPort: '80'
+            ToPort: '80'
+            CidrIp: 0.0.0.0/0
+          - IpProtocol: tcp
+            FromPort: '443'
+            ToPort: '443'
+            CidrIp: 0.0.0.0/0
+          - IpProtocol: tcp
+            FromPort: '22'
+            ToPort: '22'
+            CidrIp: 0.0.0.0/0
+          - IpProtocol: tcp
+            FromPort: 0
+            ToPort: 65535
+            CidrIp: 0.0.0.0/0
+          - IpProtocol: tcp
+            FromPort: '8080'
+            ToPort: '8080'
+            CidrIp: 0.0.0.0/0
+        SecurityGroupEgress:
+          - IpProtocol: "-1"
+            FromPort: '0'
+            ToPort: '0'
+            CidrIp: 0.0.0.0/0
