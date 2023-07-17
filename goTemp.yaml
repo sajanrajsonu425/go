@@ -50,10 +50,10 @@ Resources:
             echo 'export PATH=/usr/local/go/bin:$PATH:$GOPATH/bin' >> ~/.profile            
             source ~/.profile
             sudo DEBIAN_FRONTEND=noninteractive apt install apache2 -y
-            aws s3 cp s3://sajan-django-bucket-01/django.conf /etc/apache2/sites-available/
+            aws s3 cp s3://sjn-golang-bucket-01/go.conf /etc/apache2/sites-available/
             systemctl reload apache2
             a2dissite 000-default.conf
-            a2ensite django.conf
+            a2ensite go.conf
             systemctl restart apache2           
         SecurityGroupIds: 
           - Ref: InstanceSecurityGroup
